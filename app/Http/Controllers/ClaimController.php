@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Claim;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class ClaimController extends Controller
@@ -27,5 +28,16 @@ class ClaimController extends Controller
 
         $claim->update($validated);
         return response()->json($claim);
+    }
+
+    public function exportPdf($id)
+    {
+        $claim = Claim::with(['patient', 'consultation'])->findOrFail($id);
+
+        $pdf = Pdf::loadView('claims.pdf', [
+            'claim' => $claim,
+        ])->setPaper('a4');
+
+        return $pdf->download('claim-' . $claim->claim_number . '.pdf');
     }
 }

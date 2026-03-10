@@ -21,6 +21,7 @@ Route::apiResource('consultations', ConsultationController::class);
 
 // Claims
 Route::get('claims', [ClaimController::class, 'index']);
+Route::get('claims/{id}/export-pdf', [ClaimController::class, 'exportPdf']);
 Route::get('claims/{id}', [ClaimController::class, 'show']);
 Route::put('claims/{id}', [ClaimController::class, 'update']);
 
